@@ -1,0 +1,117 @@
+<script>
+  var availableSuits = ["Diamonds","Hearts","Spades","Clubs"]
+  var availableRanks = ["1","2","3","4","5","6","7","8","9","10","Jack","Queen","King","Ace"]
+  var cardnum 
+
+
+  function Deck() {
+    this.cards = [];
+    this.count = function() {
+      this.cards.length;
+    }
+    this.init = function() {
+      
+      for (s = 0; s <=3; s++) {
+        for (r = 0; r <= 12; r++) {
+
+          this.cards.push(new Card(availableRanks[r],availableSuits[s]));
+        }
+      }
+
+
+    }
+  }
+
+  function Card(rank, suit) {
+    this.rank = rank;
+    this.suit = suit;
+    this.show = function () {
+      console.log(this.rank + " of " + this.suit);
+    }
+  }
+
+  d = new(Deck);
+  d.init();
+
+
+  var compCards = [];
+  var userCards = [];
+  
+  while (d.cards.length > 0) {
+    
+    cardnum = (Math.floor(Math.random() * d.cards.length));
+    
+    compCards.push(d.cards[cardnum]);
+    d.cards.splice(cardnum,1)
+
+    cardnum = (Math.floor(Math.random() * d.cards.length));
+
+    userCards.push(d.cards[cardnum]);
+    d.cards.splice(cardnum,1);
+    }
+
+  
+  var compPlayedCard; 
+  var userPlayedCard; 
+  var turns = 0;
+
+  while ((userCards.length > 0) && (compCards.length > 0) && (turns < 500)) {
+
+  console.log("You have " + userCards.length + " cards remaining.  We play WAR!");
+
+  compPlayedCard = compCards[0];
+  userPlayedCard = userCards[0];
+
+  var playwinner, playwinnermsg
+
+    if (availableRanks.indexOf(compPlayedCard.rank) > availableRanks.indexOf(userPlayedCard.rank)) {
+      playwinner = "Computer";
+      playwinnermsg = "HA HA!  Computer Wins!";
+    }
+    else {
+      if (availableRanks.indexOf(compPlayedCard.rank) < availableRanks.indexOf(userPlayedCard.rank))  {
+       playwinner = "User";
+       playwinnermsg = "Daggummit! You won that one!";
+      }
+      else {
+        playwinner = "Tie";
+        playwinnermsg = "Ho Hum. Boring Tie.";
+      }
+    }
+  
+
+  console.log("Computer has the " + compPlayedCard.rank + " of " + compPlayedCard.suit + ". You have the " + userPlayedCard.rank + " of " + userPlayedCard.suit + ". " + playwinnermsg);
+
+  compCards.splice (0,1);
+  userCards.splice (0,1);
+  turns = turns + 1
+
+  if (playwinner == "Computer") {
+    compCards.push(compPlayedCard,userPlayedCard);
+  }
+  else {
+    if (playwinner == "User") {
+      userCards.push(userPlayedCard, compPlayedCard);
+    }
+    else {
+      compCards.push(compPlayedCard);
+      userCards.push(userPlayedCard);
+    }
+  }
+  }
+
+  console.log("After " + turns + " turns, the computer has " + compCards.length + " cards and you have " + userCards.length + " cards.")
+  if (userCards.length > compCards.length) {
+    console.log("That sucks!  You won!")
+  }
+  else {
+    if (userCards.length < compCards.length) {
+      console.log("Hurray for me!  I won!")
+    }
+    else  {
+      console.log("You are KIDDING me!  After all that work, a tie?")
+    }
+  }
+  
+
+</script>
